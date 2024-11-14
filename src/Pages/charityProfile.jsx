@@ -55,7 +55,7 @@ export default class CharityProfile extends React.Component {
     componentDidMount() {
         let name = window.localStorage.getItem('charityname')
         const getToken = window.localStorage.getItem('token')
-        let a = 'http://localhost:8000/tasks?charity='
+        let a = `${process.env.REACT_APP_API_BASE_URL}/tasks?charity=`
         a += name
         axios.get(a, {
             headers: {
@@ -147,9 +147,9 @@ export default class CharityProfile extends React.Component {
         }
 
         let config = {
-            headers: { 'Authorization': `Token ${token}` }
+            headers: { 'Authorization': `Token ${token} ` }
         }
-        axios.post('http://localhost:8000/tasks/', data, config)
+        axios.post(`${process.env.REACT_APP_API_BASE_URL}/tasks/`, data, config)
             .then((response) => {
                 console.log(response.data)
                 window.location.reload()
@@ -163,7 +163,7 @@ export default class CharityProfile extends React.Component {
     acceptedResponse(task) {
         var token = window.localStorage.getItem('token')
         var acc = 'A'
-        let a = 'http://localhost:8000/tasks/'
+        let a = `${process.env.REACT_APP_API_BASE_URL}/tasks/`
         a += task.id
         a += '/response/'
         axios.post(a, {
@@ -187,7 +187,7 @@ export default class CharityProfile extends React.Component {
     rejectedResponse(task) {
         var token = window.localStorage.getItem('token')
         var rej = 'R'
-        let a = 'http://localhost:8000/tasks/'
+        let a = `${process.env.REACT_APP_API_BASE_URL}/tasks/`
         a += task.id
         a += '/response/'
         axios.post(a, {
@@ -210,7 +210,7 @@ export default class CharityProfile extends React.Component {
 
     taskDone(task) {
         const getToken = window.localStorage.getItem('token')
-        let a = 'http://localhost:8000/tasks/'
+        let a = `${process.env.REACT_APP_API_BASE_URL}/tasks/`
         a += task.id
         a += '/done/'
         axios.post(a, '', {
@@ -357,7 +357,7 @@ export default class CharityProfile extends React.Component {
                                 overlay={
                                     <Tooltip id='tooltip-left' dir='rtl'>
                                         ایجاد پروژه جدید
-                                     </Tooltip>
+                                    </Tooltip>
                                 }
                             >
                                 <button style={{ border: 'none', outline: 'none' }}>

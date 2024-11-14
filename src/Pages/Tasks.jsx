@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from '../Components/Navbar'
-import {Badge, Button, Card, Col, Form, Modal, Row} from 'react-bootstrap'
-import {IoMdSearch} from 'react-icons/io'
+import { Badge, Button, Card, Col, Form, Modal, Row } from 'react-bootstrap'
+import { IoMdSearch } from 'react-icons/io'
 import axios from 'axios'
 
 export default class Tasks extends React.Component {
@@ -28,7 +28,7 @@ export default class Tasks extends React.Component {
         params.get('age')
         params.get('description')
         let config = {
-            headers: {'Authorization': `Token ${getToken}`},
+            headers: { 'Authorization': `Token ${getToken}` },
             params: {
                 title: params.get('title'),
                 charity: params.get('charity'),
@@ -38,7 +38,7 @@ export default class Tasks extends React.Component {
             }
         }
 
-        axios.get('http://localhost:8000/tasks?', config)
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/tasks?`, config)
             .then((response) => {
                 response.data.map((task) => {
                     if (task.gender_limit === 'F') {
@@ -49,11 +49,11 @@ export default class Tasks extends React.Component {
                         task.genderName = 'جنسیت: زن / مرد'
                     }
                 })
-                this.setState({taskslist: response.data})
+                this.setState({ taskslist: response.data })
             })
             .catch((error) => {
                 console.log(error)
-                this.setState({show: true})
+                this.setState({ show: true })
             })
     }
 
@@ -61,19 +61,19 @@ export default class Tasks extends React.Component {
         const name = event.target.name
         const changeFields = this.state.fields
         changeFields[name] = event.target.value
-        this.setState({fields: changeFields})
+        this.setState({ fields: changeFields })
     }
 
     ageChange(e) {
         let age = e.target.value
         if (age === '' || this.state.regexp.test(age)) {
-            this.setState({...this.state, fields: {...this.state.fields, age: age}})
+            this.setState({ ...this.state, fields: { ...this.state.fields, age: age } })
         }
     }
 
     filteredSearch() {
         const getToken = window.localStorage.getItem('token')
-        let a = 'http://localhost:8000/tasks?title='
+        let a = `${process.env.REACT_APP_API_BASE_URL}/tasks?title=`
         if (this.state.fields.title) {
             a += this.state.fields.title
         }
@@ -112,17 +112,17 @@ export default class Tasks extends React.Component {
                         task.genderName = 'جنسیت: هردو'
                     }
                 })
-                this.setState({taskslist: response.data})
+                this.setState({ taskslist: response.data })
             })
             .catch((error) => {
                 console.log(error)
-                this.setState({show: true})
+                this.setState({ show: true })
             })
     }
 
     taskRequest(task) {
         const getToken = window.localStorage.getItem('token')
-        let a = 'http://localhost:8000/tasks/'
+        let a = `${process.env.REACT_APP_API_BASE_URL}/tasks/`
         a += task.id
         a += '/request/'
 
@@ -134,26 +134,26 @@ export default class Tasks extends React.Component {
             .then((response) => {
                 console.log('taskrequest', response.data)
                 task.state = 'W'
-                this.setState({task})
+                this.setState({ task })
 
             })
             .catch((error) => {
                 console.log(error)
-                this.setState({show: true})
+                this.setState({ show: true })
             })
     }
 
     handleClose() {
-        this.setState({show: false})
+        this.setState({ show: false })
     }
 
     render() {
         return (
             <div className='taskPage' dir='rtl'>
-                <Navbar/>
+                <Navbar />
                 <div className='search-task'>
                     <div className='searchBar'>
-                        <Card className='text-right' style={{position: 'sticky', top: '90px'}}>
+                        <Card className='text-right' style={{ position: 'sticky', top: '90px' }}>
                             <Card.Header as='h4' id='searchHead'>
                                 جستجو
                             </Card.Header>
@@ -163,8 +163,8 @@ export default class Tasks extends React.Component {
                                         <Col>
                                             <Form.Label> موضوع </Form.Label>
                                             <Form.Control type='text' name='title'
-                                                          placeholder='توانایی نگهداری از سالمندان و کودکان'
-                                                          onChange={(event) => this.handleChange(event)}
+                                                placeholder='توانایی نگهداری از سالمندان و کودکان'
+                                                onChange={(event) => this.handleChange(event)}
                                             />
                                         </Col>
                                     </Row>
@@ -172,8 +172,8 @@ export default class Tasks extends React.Component {
                                         <Col>
                                             <Form.Label> موسسه خیریه </Form.Label>
                                             <Form.Control type='text' name='charityName'
-                                                          placeholder=' خیریه امام علی (ع)'
-                                                          onChange={(event) => this.handleChange(event)}
+                                                placeholder=' خیریه امام علی (ع)'
+                                                onChange={(event) => this.handleChange(event)}
                                             />
                                         </Col>
                                     </Row>
@@ -181,7 +181,7 @@ export default class Tasks extends React.Component {
                                         <Col>
                                             <Form.Label> جنسیت </Form.Label>
                                             <Form.Control as='select' name='gender'
-                                                          onChange={(event) => this.handleChange(event)}>
+                                                onChange={(event) => this.handleChange(event)}>
                                                 <option value='MF'>تفاوتی ندارد</option>
                                                 <option value='F'>زن</option>
                                                 <option value='M'>مرد</option>
@@ -190,9 +190,9 @@ export default class Tasks extends React.Component {
                                         <Col>
                                             <Form.Label> سن </Form.Label>
                                             <Form.Control type='number' name='age'
-                                                          placeholder='21'
-                                                          value={this.state.fields.age}
-                                                          onChange={(e) => this.ageChange(e)}/>
+                                                placeholder='21'
+                                                value={this.state.fields.age}
+                                                onChange={(e) => this.ageChange(e)} />
 
                                         </Col>
                                     </Row>
@@ -200,10 +200,10 @@ export default class Tasks extends React.Component {
                                         <Col>
                                             <Form.Label>توضیحات</Form.Label>
                                             <Form.Control as='textarea' rows='2'
-                                                          type='text'
-                                                          name='description'
-                                                          placeholder='محدودیت مکانی یا ...'
-                                                          onChange={(event) => this.handleChange(event)}
+                                                type='text'
+                                                name='description'
+                                                placeholder='محدودیت مکانی یا ...'
+                                                onChange={(event) => this.handleChange(event)}
                                             />
                                         </Col>
                                     </Row>
@@ -212,10 +212,10 @@ export default class Tasks extends React.Component {
                                             display: 'flex',
                                             justifyContent: 'center'
                                         }}>
-                                            <Button style={{fontWeight: 'bold'}}
-                                                    variant='outline-success'
-                                                    onClick={() => this.filteredSearch()}>
-                                                <IoMdSearch/> جستجو کن
+                                            <Button style={{ fontWeight: 'bold' }}
+                                                variant='outline-success'
+                                                onClick={() => this.filteredSearch()}>
+                                                <IoMdSearch /> جستجو کن
                                             </Button>
                                         </Col>
                                     </Row>
@@ -226,7 +226,7 @@ export default class Tasks extends React.Component {
                         </Card>
                     </div>
                     <div className='taskContainer'>
-                        { (this.state.taskslist.length > 0 &&
+                        {(this.state.taskslist.length > 0 &&
                             this.state.taskslist.map((task, index) => {
                                 return (
                                     <div key={index}>
@@ -265,8 +265,8 @@ export default class Tasks extends React.Component {
                                                     {
                                                         (task.state === 'P' &&
                                                             <Button variant='success'
-                                                                    className='applybtn'
-                                                                    onClick={() => this.taskRequest(task)}>
+                                                                className='applybtn'
+                                                                onClick={() => this.taskRequest(task)}>
                                                                 اعلام آمادگی
                                                             </Button>)
                                                     }
@@ -279,7 +279,7 @@ export default class Tasks extends React.Component {
                             <div>
                                 <Card className='text-center' id='taskCard'>
                                     <Card.Body>
-                                        <span style={{color: '#bbb'}}>هیچ پروژه‌ای موجود نیست</span>
+                                        <span style={{ color: '#bbb' }}>هیچ پروژه‌ای موجود نیست</span>
                                     </Card.Body>
                                 </Card>
                             </div>
@@ -287,10 +287,10 @@ export default class Tasks extends React.Component {
                     </div>
                 </div>
                 <Modal show={this.state.show} onHide={() => this.handleClose()} size='sm'
-                       id='taskError'>
+                    id='taskError'>
                     <Modal.Header closeButton id='taskerrorHead'>
                         <Modal.Body id='taskerrorBody'>
-                            <span style={{fontWeight: 'bold'}}> خطایی رخ داده است </span>
+                            <span style={{ fontWeight: 'bold' }}> خطایی رخ داده است </span>
                         </Modal.Body>
                     </Modal.Header>
                 </Modal>

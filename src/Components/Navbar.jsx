@@ -1,7 +1,7 @@
 import React from 'react'
-import {Button, Nav, Navbar, NavDropdown} from 'react-bootstrap'
+import { Button, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import axios from 'axios'
-import {withRouter} from 'react-router'
+import { withRouter } from 'react-router'
 
 class MyNavbar extends React.Component {
     state = {
@@ -13,16 +13,16 @@ class MyNavbar extends React.Component {
         let b = window.localStorage.getItem('b')
         let ch = window.localStorage.getItem('ch')
         if (b) {
-            this.setState({isBenefactor: true})
+            this.setState({ isBenefactor: true })
         }
         if (ch) {
-            this.setState({isCharity: true})
+            this.setState({ isCharity: true })
         }
     }
 
     logOut() {
         const token = window.localStorage.getItem('token')
-        axios.post('http://localhost:8000/accounts/logout/', '', {
+        axios.post(`${process.env.REACT_APP_API_BASE_URL}/accounts/logout/`, '', {
             headers: {
                 'Authorization': `Token ${token}`
             }
@@ -38,8 +38,8 @@ class MyNavbar extends React.Component {
     render() {
         return (
             <div className='divNav'>
-                <Navbar bg='dark' variant="dark" expand='lg' dir='rtl' style={{width: '63%'}}>
-                    <Navbar.Toggle aria-controls='basic-navbar-nav'/>
+                <Navbar bg='dark' variant="dark" expand='lg' dir='rtl' style={{ width: '63%' }}>
+                    <Navbar.Toggle aria-controls='basic-navbar-nav' />
                     <Navbar.Collapse id='basic-navbar-nav'>
                         <Nav className="ml-auto">
                             <Nav.Link href='/tasks'>نیکوکاری‌ها </Nav.Link>
@@ -49,7 +49,7 @@ class MyNavbar extends React.Component {
                                         <NavDropdown.Item
                                             href='/benefactor'>نیکوکار</NavDropdown.Item>) ||
                                     <NavDropdown.Item href='/benefactor'
-                                                      disabled>نیکوکار</NavDropdown.Item>
+                                        disabled>نیکوکار</NavDropdown.Item>
                                 }
 
                                 {
@@ -60,17 +60,16 @@ class MyNavbar extends React.Component {
                                         موسسه خیریه</NavDropdown.Item>
                                 }
                             </NavDropdown>
-                            <Nav.Link href='http://localhost:8000/about-us/'>درباره‌ما</Nav.Link>
-                        </Nav>
+                            <Nav.Link href={`${process.env.REACT_APP_API_BASE_URL}/about-us/`}>درباره‌ما</Nav.Link></Nav >
                         <nav className='mr-auto'>
                             <Button variant='danger'
-                                    onClick={() => this.logOut()}>
+                                onClick={() => this.logOut()}>
                                 خروج
                             </Button>
                         </nav>
-                    </Navbar.Collapse>
-                </Navbar>
-            </div>
+                    </Navbar.Collapse >
+                </Navbar >
+            </div >
         )
     }
 }

@@ -1,8 +1,8 @@
 import React from 'react'
-import {IoMdLock, IoMdPerson} from 'react-icons/io'
+import { IoMdLock, IoMdPerson } from 'react-icons/io'
 import axios from 'axios'
-import {withRouter} from 'react-router'
-import {Alert} from 'react-bootstrap'
+import { withRouter } from 'react-router'
+import { Alert } from 'react-bootstrap'
 
 class Login extends React.Component {
   state = {
@@ -21,7 +21,7 @@ class Login extends React.Component {
   }
 
   handleRequest() {
-    axios.post('http://localhost:8000/accounts/login/', {
+    axios.post(`${process.env.REACT_APP_API_BASE_URL}/accounts/login/`, {
       username: this.state.fields.username,
       password: this.state.fields.password
     })
@@ -61,7 +61,7 @@ class Login extends React.Component {
         </div>
         <button className='logbtn' onClick={() => this.handleRequest()} >ورود</button>
         <Alert id='authenalert' show={this.state.show} variant='danger' onClose={() => this.handleClose()} dismissible >
-            <span style={{ fontWeight: 'bold' }}> خطایی رخ داده است </span>
+          <span style={{ fontWeight: 'bold' }}> خطایی رخ داده است </span>
         </Alert>
       </div>
     )

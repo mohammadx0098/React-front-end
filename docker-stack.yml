@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  react-app:
+    image: react-front-end-react-app:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-public"
+      - "traefik.http.routers.reactCharity.entrypoints=http"
+      - "traefik.http.routers.reactCharity.rule=Host(`charity.${HOST}`)"
+      - "traefik.http.routers.reactCharity.middlewares=https-redirect"
+      - "traefik.http.routers.reactCharity-secure.entrypoints=https"
+      - "traefik.http.routers.reactCharity-secure.rule=Host(`charity.${HOST}`)"
+      - "traefik.http.routers.reactCharity-secure.tls=true"
+      - "traefik.http.routers.reactCharity-secure.tls.options=default"
+      - "traefik.http.routers.reactCharity-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.services.reactCharity.loadbalancer.server.port=3000"
+    networks:
+      - charity-front-network
+      - traefik-public
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+networks:
+  charity-front-network:
+    name: charity-front-network
+  traefik-public:
+    external: true
+
